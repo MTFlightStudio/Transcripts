@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message Browse {
+  string endpoint = 2;
+  SubBrowse subBrowse = 25;
+}
+
+message SubBrowse {
+  string postId = 22;
+}

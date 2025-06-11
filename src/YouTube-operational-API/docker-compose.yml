@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  api:
+    image: youtube-operational-api
+    build: .
+    restart: on-failure
+    ports:
+      - "8081:80"
+

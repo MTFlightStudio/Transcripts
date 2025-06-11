@@ -1,3 +1,33 @@
+# Environment variables
+.env
+config.env
+*.env
+
+# Secrets and credentials
+*.pickle
+*.json
+client_secrets.json
+flightstudio-d8c6c3039d4c.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE / Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependencies
+venv/
+env/
+.venv/
+dist/
+build/
+*.egg-info/
+
 .DS_Store
 *.log
 node_modules/

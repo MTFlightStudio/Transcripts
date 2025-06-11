@@ -27,6 +27,10 @@ gauth.LoadClientConfigFile("client_secrets.json")
 gauth.LocalWebserverAuth()
 drive = GoogleDrive(gauth)
 
+# Create output directory if it doesn't exist
+output_dir = os.path.join(os.getcwd(), "output")
+os.makedirs(output_dir, exist_ok=True)
+
 def download_from_gdrive(file_id, destination_file_name):
     logging.info(f"Downloading file with ID {file_id} from Google Drive to {destination_file_name}")
     file = drive.CreateFile({'id': file_id})
@@ -135,7 +139,7 @@ def process_folder(folder_id):
     for file in file_list:
         if file['title'].endswith((".mp4", ".m4v")):
             video_id = file['title'].replace('.mp4', '').replace('.m4v', '')
-            transcription_file = f"output/{video_id}_transcription.txt"
+            transcription_file = os.path.join(output_dir, f"{video_id}_transcription.txt")
             
             if os.path.exists(transcription_file):
                 logging.info(f"Transcription file {transcription_file} already exists. Skipping transcription.")
@@ -143,6 +147,7 @@ def process_folder(folder_id):
                     transcript_text = trans_file.read()
             else:
                 logging.info(f"Processing file: {file['title']}")
+                local_audio_file = os.path.join(output_dir, "temp_audio.mp4")
                 download_from_gdrive(file['id'], local_audio_file)
                 transcript_text, transcript_length = transcribe_audio(local_audio_file, transcription_file)
                 os.remove(local_audio_file)  # Clean up local file
@@ -153,7 +158,6 @@ def process_folder(folder_id):
 
 if __name__ == "__main__":
     folder_ids = ["1gag06lqpHtA27ttKZHUxse_rzrkRKUeu", "1bwkf6b5aDqbTqZ75_EY99OGN1Y40M4wH"]
-    local_audio_file = "temp_audio.mp4"
 
     for folder_id in folder_ids:
         process_folder(folder_id)
